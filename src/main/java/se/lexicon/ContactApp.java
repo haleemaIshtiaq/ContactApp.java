@@ -20,8 +20,8 @@ public class ContactApp {
             String choice = IO.readln("Enter your choice: ");
             switch (choice) {
                 case "1" -> createContact();
-                case "2" -> IO.println("updateContact();");
-                case "3" -> IO.println("deleteContact();");
+                case "2" -> updateContact();
+                case "3" -> deleteContact();
                 case "4" -> IO.println("searchContact();");
                 case "5" -> {
                     IO.println("Thankyou for using app");
@@ -43,6 +43,7 @@ public class ContactApp {
          //Check if email already exists
          if(contacts.containsKey(email)){
              IO.println("A contact with this email already exist");
+             return;
          }
 
          //Create a new contact object
@@ -57,6 +58,36 @@ public class ContactApp {
          IO.println("Contact created successfully");
 
 
+
+     }
+     void updateContact(){
+         String email = IO.readln("Enter email for update: ").trim();
+         //Check if contact exists
+         if(!contacts.containsKey(email)){
+             IO.println("A contact with this email does not exist");
+             return;
+         }
+         //Get the existing contact
+         Contact contact = contacts.get(email);
+
+         //Update contact information
+         contact.name = IO.readln("Enter new name: ");
+         contact.address = IO.readln("Enter new address: ");
+         contact.phone = IO.readln("Enter new phone: ");
+
+         IO.println("Contact updated successfully");
+     }
+
+     void deleteContact(){
+         String email = IO.readln("Enter email for deletion: ").trim();
+         //Check if contact exists
+         if(!contacts.containsKey(email)){
+             IO.println("A contact with this email does not exist");
+             return;
+         }
+         //Delete contact from HashMap
+         contacts.remove(email);
+         IO.println("Contact deleted successfully!");
 
      }
 }
