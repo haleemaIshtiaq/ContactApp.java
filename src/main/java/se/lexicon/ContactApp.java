@@ -1,6 +1,9 @@
 package se.lexicon;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -16,14 +19,16 @@ public class ContactApp {
             IO.println("2- Update Contact");
             IO.println("3- Delete Contact");
             IO.println("4- Search Contact");
-            IO.println("5- Exit ");
+            IO.println("5- View all Contacts");
+            IO.println("6- Exit ");
             String choice = IO.readln("Enter your choice: ");
             switch (choice) {
                 case "1" -> createContact();
                 case "2" -> updateContact();
                 case "3" -> deleteContact();
                 case "4" -> searchContact();
-                case "5" -> {
+                case "5" -> sortContacts();
+                case "6" -> {
                     IO.println("Thank you for using app");
                     running = false;
                 }
@@ -165,6 +170,41 @@ public class ContactApp {
      }
      boolean isValidPhone(String phone){
          return phone.matches("\\+?[0-9 ]{7,20}");
+     }
+
+     void sortContacts(){
+         //Check if there is any contact
+         if(contacts.isEmpty()){
+             IO.println("No contacts available.");
+             return;
+         }
+         //sort all the contact names
+         ArrayList<String> names = new ArrayList<>();
+         for(Contact contact : contacts.values()){
+             names.add(contact.name);
+         }
+         //Sort names alphabetically
+         Collections.sort(names,String.CASE_INSENSITIVE_ORDER);
+
+         //To prevent duplicate printing
+         HashSet<String> displayedEmails = new HashSet<>();
+         //Display all contacts in alphabetical order
+         for (String name : names){
+             for(Contact contact : contacts.values()){
+                 if(contact.name.equals(name)&& displayedEmails.add(contact.email)){
+                     IO.println("Name: " +contact.name);
+                     IO.println("Email: " +contact.email);
+                     IO.println("Address: " +contact.address);
+                     IO.println("Phone: " +contact.phone);
+                     IO.println("-----------------------------");
+
+                 }
+             }
+         }
+
+
+
+
      }
 }
 
