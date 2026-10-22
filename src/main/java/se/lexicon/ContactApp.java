@@ -11,7 +11,7 @@ public class ContactApp {
 
         boolean running = true;
         while (running) {
-            IO.println("WElOME TO CONTACT MANAGEMENT APP");
+            IO.println("\n\nWElOME TO CONTACT MANAGEMENT APP");
             IO.println("1- Create Contact");
             IO.println("2- Update Contact");
             IO.println("3- Delete Contact");
@@ -22,9 +22,9 @@ public class ContactApp {
                 case "1" -> createContact();
                 case "2" -> updateContact();
                 case "3" -> deleteContact();
-                case "4" -> IO.println("searchContact();");
+                case "4" -> searchContact();
                 case "5" -> {
-                    IO.println("Thankyou for using app");
+                    IO.println("Thank you for using app");
                     running = false;
                 }
                 default -> IO.println("Invalid choice.");
@@ -88,6 +88,24 @@ public class ContactApp {
          //Delete contact from HashMap
          contacts.remove(email);
          IO.println("Contact deleted successfully!");
+
+     }
+     void searchContact(){
+         String email = IO.readln("Enter email for searching: ").trim();
+         //Check if contact exists
+         if(!contacts.containsKey(email)){
+             IO.println("A contact with this email does not exist");
+             return;
+         }
+         //Retrieve contact from HashMap
+         Contact contact = contacts.get(email);
+         //Display contact information
+         IO.println("\n=========Contact Details=========");
+         IO.println("Name: " +contact.name);
+         IO.println("Email: " +contact.email);
+         IO.println("Address: " +contact.address);
+         IO.println("Phone: " +contact.phone);
+
 
      }
 }
