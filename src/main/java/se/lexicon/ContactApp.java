@@ -93,25 +93,25 @@ public class ContactApp {
 
      void deleteContact(){
          String email = IO.readln("Enter email for deletion: ").trim();
-         //Check if contact exists
-         if(!contacts.containsKey(email)){
-             IO.println("A contact with this email does not exist");
-             return;
+
+         if(removeContact(email)) {
+             IO.println("Contact deleted successfully!");
+
          }
-         //Delete contact from HashMap
-         contacts.remove(email);
-         IO.println("Contact deleted successfully!");
+         else{
+             IO.println("A contact with this email does not exist");
+         }
 
      }
      void searchContact(){
          String email = IO.readln("Enter email for searching: ").trim();
+         Contact contact = findContactByEmail(email);
          //Check if contact exists
-         if(!contacts.containsKey(email)){
+         if(contact == null){
              IO.println("A contact with this email does not exist");
              return;
          }
-         //Retrieve contact from HashMap
-         Contact contact = contacts.get(email);
+
          //Display contact information
          IO.println("\n=========Contact Details=========");
          IO.println("Name: " +contact.name);
@@ -198,5 +198,19 @@ public class ContactApp {
         contacts.put(contact.email,contact);
         return true;
     }
+
+    Contact findContactByEmail(String email){
+         return contacts.get(email);
+    }
+
+    boolean removeContact(String email) {
+
+        if (!contacts.containsKey(email)) {
+            return false;
+        }
+        contacts.remove(email);
+        return true;
+    }
+
 }
 
