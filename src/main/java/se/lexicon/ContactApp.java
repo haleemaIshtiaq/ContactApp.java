@@ -40,51 +40,24 @@ public class ContactApp {
      //Creating create contact method
      void  createContact()  {
         String email = IO.readln("Enter email: ").trim();
-
-        //Check valid email
-         if(!isValidEmail(email)){
-             IO.println("Invalid email address");
-             return;
-         }
-
-
-         //Check if email already exists
-         if(contacts.containsKey(email)){
-             IO.println("A contact with this email already exist");
-             return;
-         }
-
-         //Check empty name
          String name = IO.readln("Enter name: ").trim();
-         if(!isValidName(name)){
-             IO.println("Name cannot be empty");
-             return;
-         }
+         String address = IO.readln("Enter address: ").trim();
+         String phone = IO.readln("Enter  phone: ").trim();
 
-         //Check empty eddress
-          String address = IO.readln("Enter address: ");
-         if(!isValidAddress(address)){
-             IO.println("Address cannot be empty");
-             return;
-         }
 
-         //Check valid phone number
-         String phone = IO.readln("Enter phone: ");
-         if(!isValidPhone(phone)){
-             IO.println("Invalid phone number");
-             return;
-         }
-
-         //Create a new contact object
+        //Create a new contact object
          Contact contact = new Contact();
          contact.email = email;
          contact.name = name;
          contact.address = address;
          contact.phone = phone;
          //Store contact using email as the key
-         contacts.put(email,contact);
-         IO.println("Contact created successfully");
-
+         if(addContact(contact)) {
+             IO.println("Contact created successfully");
+         }
+         else{
+             IO.println("Invalid information or email already exist.");
+         }
 
 
      }
@@ -101,31 +74,21 @@ public class ContactApp {
          String address = IO.readln("Enter new address: ").trim();
          String phone = IO.readln("Enter new phone: ");
 
-         //Check empty name
-         if(!isValidName(name)){
-             IO.println("Name cannot be empty");
-             return;
-         }
 
-         //Check empty eddress
-         if(!isValidAddress(address)){
-             IO.println("Address cannot be empty");
-             return;
-         }
-
-         //Check valid phone number
-         if(!isValidPhone(phone)){
-             IO.println("Invalid phone number");
-             return;
-         }
          //Get the existing contact
-         Contact contact = contacts.get(email);
+         Contact contact = new Contact();
 
          //Update contact information
+         contact.email = email;
          contact.name = name;
          contact.address = address;
          contact.phone = phone;
-         IO.println("Contact updated successfully");
+
+         if(editContact(contact) ){
+         IO.println("Contact updated successfully");}
+         else{
+             IO.println("Information is invalid.");
+         }
      }
 
      void deleteContact(){
@@ -206,5 +169,34 @@ public class ContactApp {
 
 
      }
+
+     boolean addContact(Contact contact){
+         if(contact == null){
+             return false;
+         }
+         if(!isValidName(contact.name)||!isValidEmail(contact.email)||!isValidAddress(contact.address)||!isValidPhone(contact.phone)){
+            return false;
+         }
+         if(contacts.containsKey(contact.email)){
+             return false;
+         }
+         contacts.put(contact.email,contact);
+         return true;
+     }
+
+    boolean editContact(Contact contact){
+        if(contact == null){
+            return false;
+        }
+        if(!contacts.containsKey(contact.email)){
+            return false;
+        }
+        if(!isValidName(contact.name)||!isValidAddress(contact.address)||!isValidPhone(contact.phone)){
+            return false;
+        }
+
+        contacts.put(contact.email,contact);
+        return true;
+    }
 }
 
