@@ -1,9 +1,12 @@
 package se.lexicon;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.util.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.File;
+import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -11,7 +14,7 @@ public class ContactApp {
     HashMap<String, Contact> contacts = new HashMap<>();
 
      void main() {
-
+        loadContacts();
         boolean running = true;
         while (running) {
             IO.println("\n\nWElOME TO CONTACT MANAGEMENT APP");
@@ -29,6 +32,7 @@ public class ContactApp {
                 case "4" -> searchContact();
                 case "5" -> sortContacts();
                 case "6" -> {
+                    saveContacts();
                     IO.println("Thank you for using app");
                     running = false;
                 }
@@ -211,6 +215,40 @@ public class ContactApp {
         contacts.remove(email);
         return true;
     }
-
+void saveContacts(){
+         try(FileWriter writer = new FileWriter("contacts.txt")){
+             for (Contact contact : contacts.values()){
+                 writer.write(contact.name+ ","+
+                         contact.email+ ","+ contact.address+ ","+ contact.phone+"\n" );
+             }
+             IO.println("Contacts saved successfully in file");
+         }catch (IOException e){
+             IO.println("Error saving contacts: " + e.getMessage());
+         }
+}
+void loadContacts(){
+         File file = new File("contacts.txt");
+         if(!file.exists()){
+             return;
+         }
+         try(Scanner scanner = new Scanner(file)){
+             while(scanner.hasNextLine()){
+                 String line = scanner.nextLine();
+                 String[] data = line.split(",",-1);
+                 if(data.length !=4){
+                     continue;
+                 }
+                 Contact contact = new Contact();
+                 contact.name= data[0];
+                 contact.email = data[1];
+                 contact.address = data[2];
+                 contact.phone = data[3];
+                 addContact(contact);
+             }
+             IO.println("Contacts loaded successfully");
+         }catch(FileNotFoundException e){
+             IO.println("Error loading contacts: " + e.getMessage());
+         }
+}
 }
 
